@@ -8,11 +8,13 @@ For ExoC control sample usage, the resolution set is standard cooler set (powers
 
 ## Example usage
 1. Create your working directory:
+
 '''
 mkdir example_exoc_dir
 cd example_exoc_dir
 '''
-2. Link all scripts to the working directory:
+
+3. Link all scripts to the working directory:
 > scripts_path = _path to ExoC-translocation-finder folder_
 '''
 for t in $(find ${scripts_path} -mindepth 1 -maxdepth 1 -name "*.py"); do 
