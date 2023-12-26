@@ -26,8 +26,8 @@ wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/hg19/s132_P10.mcoo
 wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.mcool
 ```
 4. Inside your cluster queue run _trans_founder_complete_new.py_ script to make csv files with all artifacts. Then run _bedpe_maker_complete.py_ on the csv files to make bedpe files with filtered translocations.
+>n_proc = _your number of valid threads (max threads minus 2 is highly recomended)_
 ```
-n_proc = _your number of valid threads (max threads minus 2 is highly recomended)_
 python trans_founder_complete_new.py -d . -p s132_P10.mcool -c sup_pat.XX.mcool -n ${n_proc} --logs
 python bedpe_maker_complete.py -f s132_P10-all_artifacts.csv
 python bedpe_maker_complete.py -f s132_P10-all_artifacts_line.csv
