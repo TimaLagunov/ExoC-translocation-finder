@@ -1,6 +1,10 @@
 # ExoC-translocation-finder
 The code for translocation search on mcool maps after Exo-C experiment
 
+# Requirements
+1. Python >= 3.9
+2. Install [cooltools] (https://github.com/open2c/cooltools) in empty conda environment (this tool is really picky and may cause dependency probmlems).
+
 ## Example usage
 1. Create your working directory:
 
