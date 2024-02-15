@@ -3,7 +3,7 @@ The code for translocation search on mcool maps after Exo-C experiment
 
 # Requirements
 1. Python >= 3.9
-2. Install [cooltools] (https://github.com/open2c/cooltools) in empty conda environment (this tool is really picky and may cause dependency probmlems).
+2. Install [cooltools](https://github.com/open2c/cooltools) in empty conda environment (this tool is really picky and may cause dependency probmlems).
 
 ## Example usage
 1. Create your working directory:
@@ -56,7 +56,9 @@ python bedpe_maker_complete.py -f s132_P10-all_artifacts_line.csv
 >[!NOTE]
 >mnd_path = _path to merged_nodups.txt file_
 >
->chr_size_file = _path to chrsize file_ (highly recomend to make special chrsizes file for cooler with chomosome sizes larger by 150bp because of juicer aligment coordinates things)
+>chr_size_file = _path to chrsize file_
+>
+>Highly recomend to make special chrsizes file for cooler (like _hg19.chromsizes.for.coller_ in repo) with chomosome sizes **larger by 150bp** because of juicer aligment coordinates things
 
 ```
 awk 'BEGIN {OFS="\t"; FS=" "} ($9>=30)&&($12>=30) {print $2,$3,$6,$7}' ${mnd_path} | cooler cload pairs -c1 1 -p1 2 -c2 3 -p2 4 ${chr_size_file}:1000 - sample.cool
