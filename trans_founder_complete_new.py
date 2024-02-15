@@ -522,8 +522,9 @@ def main(command_line=None):
      chrpairs) = parse_line(command_line)
 
     # DataFrames initialization
-    artifacts = pd.DataFrame(columns=['x', 'y', 'chrX', 'chrY', 'prob', 'x_lim', 'y_lim', 's_init', 'sx', 'sy', 'type', 'pat_sum', 'control_sum', 'resolution', 'mosaik', 'size', 'x_interval', 'y_interval'])
-    old_dois = pd.DataFrame()
+    cols_list = ['x', 'y', 'chrX', 'chrY', 'prob', 'x_lim', 'y_lim', 's_init', 'sx', 'sy', 'type', 'pat_sum', 'control_sum', 'resolution', 'mosaik', 'size', 'x_interval', 'y_interval']
+    artifacts = pd.DataFrame(columns=cols_list)
+    old_dois = pd.DataFrame(columns=cols_list)
     artifacts_line = pd.DataFrame()
 
     # Few constants that will help us
@@ -814,4 +815,4 @@ if __name__ == '__main__':
     main()
     if not leave_logs:
         os.removedirs(logs_dir)
-        os.remove(os.realpath(log_file))
+        os.remove(os.path.realpath(log_file))
