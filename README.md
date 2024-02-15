@@ -74,6 +74,8 @@ ln -s -T ../sample.mcool sample.mcool
 ```
 
 5. Download the [XX control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.mcool) or [XY control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XY.mcool) (depends on your ***sample*** sex):
+>[!WARNING]
+>Our control files have chromosomes length **larger by 150bp**. Use _hg19.chromsizes.for.coller_ when you make your mcool files to avoid problems.
 
 ```
 wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.mcool
