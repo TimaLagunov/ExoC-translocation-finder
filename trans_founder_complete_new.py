@@ -66,8 +66,8 @@ def calculations_trans(chr_name1, chr_name2):
     tmp_expected_prob_slice = expected_prob_slice[chr1.to_slice(), chr2.to_slice()].copy()
 
     # Calculating "probabilities" for pixels to be artifacts
-    prob = binom.pmf(tmp_pat_slice.data, pat_cov, np.float64(tmp_expected_prob_slice.data))
-    prob2 = binom.pmf(tmp_control_same_dots_slice.data, control_same_dots_cov, np.float64(tmp_expected_prob_slice.data))
+    prob = binom.pmf(tmp_pat_slice.data, pat_cov, float(tmp_expected_prob_slice.data))
+    prob2 = binom.pmf(tmp_control_same_dots_slice.data, control_same_dots_cov, float(tmp_expected_prob_slice.data))
     prob[prob<=0] = prob[prob>0].min() if len(prob[prob>0])>0 else -1e-300
     prob = np.log10(prob)
     prob2[prob2<=0] = prob2[prob2>0].min() if len(prob2[prob2>0])>0 else -1e-300
@@ -99,9 +99,9 @@ def calculations_trans(chr_name1, chr_name2):
         doi_mask = np.array(((prob < prob2 + doi_threshold_trans) & (~artifacts_doi) & (old_dois_doi)), dtype=bool)
     del(prob, prob2, artifacts_doi, old_dois_doi)
 
-    best_prob = np.ones((doi_mask.sum(), 1), dtype = np.float64)*1e4
-    best_params = np.zeros((doi_mask.sum(), 10), dtype = np.int64)
-    best_mosaik = np.zeros((doi_mask.sum(), 1), dtype = np.float64)
+    best_prob = np.ones((doi_mask.sum(), 1), dtype = float)*1e4
+    best_params = np.zeros((doi_mask.sum(), 10), dtype = int)
+    best_mosaik = np.zeros((doi_mask.sum(), 1), dtype = float)
 
     for ibp, (x,y) in enumerate(zip(r[doi_mask], c[doi_mask])):
         for sx in [1,-1]:
@@ -118,7 +118,7 @@ def calculations_trans(chr_name1, chr_name2):
                                                   )
 
                     tmp_answer_prob = binom.pmf(roi_pat, pat_cov, 
-                                                np.float64(roi_control/control_cov)
+                                                float(roi_control/control_cov)
                                                )
                     tmp_answer_prob[tmp_answer_prob<=0] = tmp_answer_prob[tmp_answer_prob>0].min() if len(tmp_answer_prob[tmp_answer_prob>0])>0 else -1e-300
                     tmp_answer_prob = np.log10(tmp_answer_prob)
@@ -126,7 +126,7 @@ def calculations_trans(chr_name1, chr_name2):
 
                     answer_arm = np.zeros((roi_pat.shape[0], roi_pat.shape[1], prob_window.shape[2]))
                     for i,ep in enumerate(p_s[:prob_window.shape[2]]):
-                        answer_arm[:,:,i] = binom.pmf(roi_pat, pat_cov, np.float64(1/2 - np.sqrt(1/4 + 
+                        answer_arm[:,:,i] = binom.pmf(roi_pat, pat_cov, float(1/2 - np.sqrt(1/4 + 
                         4*(m_k/2*np.square(ep) + (1-m_k/2)*np.square(trans_prob) 
                              - m_k/2*ep - (1-m_k/2)*(trans_prob)))))
                     answer_arm[answer_arm<=0] = answer_arm[answer_arm>0].min() if len(answer_arm[answer_arm>0])>0 else -1e-300
@@ -218,8 +218,8 @@ def calculations_cis(chr_name1, chr_name2):
     tmp_expected_prob_slice = expected_prob_slice[chr1.to_slice(), chr2.to_slice()].copy()
 
     # Calculating "probabilities" for pixels to be artifacts
-    prob = binom.pmf(tmp_pat_slice.data, pat_cov, np.float64(tmp_expected_prob_slice.data))
-    prob2 = binom.pmf(tmp_control_same_dots_slice.data, control_same_dots_cov, np.float64(tmp_expected_prob_slice.data))
+    prob = binom.pmf(tmp_pat_slice.data, pat_cov, float(tmp_expected_prob_slice.data))
+    prob2 = binom.pmf(tmp_control_same_dots_slice.data, control_same_dots_cov, float(tmp_expected_prob_slice.data))
     prob[prob<=0] = prob[prob>0].min() if len(prob[prob>0])>0 else -1e-300
     prob = np.log10(prob)
     prob2[prob2<=0] = prob2[prob2>0].min() if len(prob2[prob2>0])>0 else -1e-300
@@ -257,9 +257,9 @@ def calculations_cis(chr_name1, chr_name2):
     del(prob, prob2, artifacts_doi, old_dois_doi)
     doi_mask = doi_mask & diag_mask
 
-    best_prob = np.ones((doi_mask.sum(), 1), dtype = np.float64)*1e4
-    best_params = np.zeros((doi_mask.sum(), 10), dtype = np.int64)
-    best_mosaik = np.zeros((doi_mask.sum(), 1), dtype = np.float64)
+    best_prob = np.ones((doi_mask.sum(), 1), dtype = float)*1e4
+    best_params = np.zeros((doi_mask.sum(), 10), dtype = int)
+    best_mosaik = np.zeros((doi_mask.sum(), 1), dtype = float)
 
     for ibp, (x,y) in enumerate(zip(r[doi_mask], c[doi_mask])):
         for sx in [1,-1]:
@@ -277,7 +277,7 @@ def calculations_cis(chr_name1, chr_name2):
                                                    np.square(expected_trans)
                                                   )
                     tmp_answer_prob = binom.pmf(roi_pat, pat_cov, 
-                                                np.float64(1/2 - np.sqrt(1/4 + 2*(np.square(ref_prob) - (ref_prob) + 
+                                                float(1/2 - np.sqrt(1/4 + 2*(np.square(ref_prob) - (ref_prob) + 
                                                                                   np.square(expected_trans) - (expected_trans))))
                                                )
                     tmp_answer_prob[tmp_answer_prob<=0] = tmp_answer_prob[tmp_answer_prob>0].min() if len(tmp_answer_prob[tmp_answer_prob>0])>0 else -1e-300
@@ -286,7 +286,7 @@ def calculations_cis(chr_name1, chr_name2):
 
                     answer_arm = np.zeros((roi_pat.shape[0], roi_pat.shape[1], prob_window.shape[2]))
                     for i,ep in enumerate(p_s[:prob_window.shape[2]]):
-                        answer_arm[:,:,i] = binom.pmf(roi_pat, pat_cov, np.float64(1/2 - np.sqrt(1/4 + 
+                        answer_arm[:,:,i] = binom.pmf(roi_pat, pat_cov, float(1/2 - np.sqrt(1/4 + 
                                                                                     (1*m_k*np.square(ep) - 1*m_k*ep + 
                                                                                     1*m_k*np.square(ref_prob) - 1*m_k*ref_prob + 
                                                                                     (4-2*m_k)*np.square(expected_trans) - (4-2*m_k)*(expected_trans))
@@ -295,7 +295,7 @@ def calculations_cis(chr_name1, chr_name2):
                     answer_arm = np.log10(answer_arm)
                     answer_arm = np.nan_to_num(answer_arm, nan=0.0, posinf=0.0, neginf=0.0)
 
-                    answer_trans = binom.pmf(roi_pat, pat_cov, np.float64(1/2 - np.sqrt(1/4 + 
+                    answer_trans = binom.pmf(roi_pat, pat_cov, float(1/2 - np.sqrt(1/4 + 
                                                                                     ((4-3*m_k)*np.square(expected_trans) - (4-3*m_k)*(expected_trans) + 
                                                                                      1*m_k*np.square(ref_prob) - 1*m_k*ref_prob)
                                                                                     )))
@@ -529,7 +529,7 @@ def main(command_line=None):
 
     # Few constants that will help us
     chunksize = 10**7
-    max_coord_const = np.int64(10**7)
+    max_coord_const = int(10**7)
     ir = 0 # Valuable iteration counter
 
     pat_id = os.path.splitext(os.path.split(pat_file)[-1])[0]
@@ -555,16 +555,16 @@ def main(command_line=None):
 
         # Cut only nonzero pixels of patient from control
         _,_, same_coords_inds = np.intersect1d(
-            np.int64(pat_slice.row)*max_coord_const+np.int64(pat_slice.col),
-            np.int64(control_slice.row)*max_coord_const+np.int64(control_slice.col),
+            int(pat_slice.row)*max_coord_const+int(pat_slice.col),
+            int(control_slice.row)*max_coord_const+int(control_slice.col),
             assume_unique=True, return_indices=True)
 
         # If not all nonzero pixels of patient are nonzero in control, we add patient map to control map and cut the pixels again
         if len(same_coords_inds) != len(pat_slice.data):
             control_slice = (control_slice+pat_slice).tocoo()
             _,_, same_coords_inds = np.intersect1d(
-            np.int64(pat_slice.row)*max_coord_const+np.int64(pat_slice.col),
-            np.int64(control_slice.row)*max_coord_const+np.int64(control_slice.col),
+            int(pat_slice.row)*max_coord_const+int(pat_slice.col),
+            int(control_slice.row)*max_coord_const+int(control_slice.col),
             assume_unique=True, return_indices=True)
 
         control_same_dots_cov = control_slice.data[same_coords_inds].sum()
