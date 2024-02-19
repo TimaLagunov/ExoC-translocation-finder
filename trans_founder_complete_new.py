@@ -66,8 +66,8 @@ def calculations_trans(chr_name1, chr_name2):
     tmp_expected_prob_slice = expected_prob_slice[chr1.to_slice(), chr2.to_slice()].copy()
 
     # Calculating "probabilities" for pixels to be artifacts
-    prob = binom.pmf(tmp_pat_slice.data, pat_cov, float(tmp_expected_prob_slice.data))
-    prob2 = binom.pmf(tmp_control_same_dots_slice.data, control_same_dots_cov, float(tmp_expected_prob_slice.data))
+    prob = binom.pmf(tmp_pat_slice.data, pat_cov, tmp_expected_prob_slice.data.astype(float))
+    prob2 = binom.pmf(tmp_control_same_dots_slice.data, control_same_dots_cov, tmp_expected_prob_slice.data.astype(float))
     prob[prob<=0] = prob[prob>0].min() if len(prob[prob>0])>0 else -1e-300
     prob = np.log10(prob)
     prob2[prob2<=0] = prob2[prob2>0].min() if len(prob2[prob2>0])>0 else -1e-300
@@ -118,7 +118,7 @@ def calculations_trans(chr_name1, chr_name2):
                                                   )
 
                     tmp_answer_prob = binom.pmf(roi_pat, pat_cov, 
-                                                float(roi_control/control_cov)
+                                                (roi_control/control_cov).astype(float)
                                                )
                     tmp_answer_prob[tmp_answer_prob<=0] = tmp_answer_prob[tmp_answer_prob>0].min() if len(tmp_answer_prob[tmp_answer_prob>0])>0 else -1e-300
                     tmp_answer_prob = np.log10(tmp_answer_prob)
@@ -126,9 +126,9 @@ def calculations_trans(chr_name1, chr_name2):
 
                     answer_arm = np.zeros((roi_pat.shape[0], roi_pat.shape[1], prob_window.shape[2]))
                     for i,ep in enumerate(p_s[:prob_window.shape[2]]):
-                        answer_arm[:,:,i] = binom.pmf(roi_pat, pat_cov, float(1/2 - np.sqrt(1/4 + 
+                        answer_arm[:,:,i] = binom.pmf(roi_pat, pat_cov, (1/2 - np.sqrt(1/4 + 
                         4*(m_k/2*np.square(ep) + (1-m_k/2)*np.square(trans_prob) 
-                             - m_k/2*ep - (1-m_k/2)*(trans_prob)))))
+                             - m_k/2*ep - (1-m_k/2)*(trans_prob)))).astype(float))
                     answer_arm[answer_arm<=0] = answer_arm[answer_arm>0].min() if len(answer_arm[answer_arm>0])>0 else -1e-300
                     answer_arm = np.log10(answer_arm)
                     answer_arm = np.nan_to_num(answer_arm, nan=0.0, posinf=0.0, neginf=0.0)
@@ -218,8 +218,8 @@ def calculations_cis(chr_name1, chr_name2):
     tmp_expected_prob_slice = expected_prob_slice[chr1.to_slice(), chr2.to_slice()].copy()
 
     # Calculating "probabilities" for pixels to be artifacts
-    prob = binom.pmf(tmp_pat_slice.data, pat_cov, float(tmp_expected_prob_slice.data))
-    prob2 = binom.pmf(tmp_control_same_dots_slice.data, control_same_dots_cov, float(tmp_expected_prob_slice.data))
+    prob = binom.pmf(tmp_pat_slice.data, pat_cov, tmp_expected_prob_slice.data.astype(float))
+    prob2 = binom.pmf(tmp_control_same_dots_slice.data, control_same_dots_cov, tmp_expected_prob_slice.data.astype(float))
     prob[prob<=0] = prob[prob>0].min() if len(prob[prob>0])>0 else -1e-300
     prob = np.log10(prob)
     prob2[prob2<=0] = prob2[prob2>0].min() if len(prob2[prob2>0])>0 else -1e-300
@@ -277,8 +277,8 @@ def calculations_cis(chr_name1, chr_name2):
                                                    np.square(expected_trans)
                                                   )
                     tmp_answer_prob = binom.pmf(roi_pat, pat_cov, 
-                                                float(1/2 - np.sqrt(1/4 + 2*(np.square(ref_prob) - (ref_prob) + 
-                                                                                  np.square(expected_trans) - (expected_trans))))
+                                                (1/2 - np.sqrt(1/4 + 2*(np.square(ref_prob) - (ref_prob) + 
+                                                                                  np.square(expected_trans) - (expected_trans)))).astype(float)
                                                )
                     tmp_answer_prob[tmp_answer_prob<=0] = tmp_answer_prob[tmp_answer_prob>0].min() if len(tmp_answer_prob[tmp_answer_prob>0])>0 else -1e-300
                     tmp_answer_prob = np.log10(tmp_answer_prob)
@@ -286,19 +286,19 @@ def calculations_cis(chr_name1, chr_name2):
 
                     answer_arm = np.zeros((roi_pat.shape[0], roi_pat.shape[1], prob_window.shape[2]))
                     for i,ep in enumerate(p_s[:prob_window.shape[2]]):
-                        answer_arm[:,:,i] = binom.pmf(roi_pat, pat_cov, float(1/2 - np.sqrt(1/4 + 
+                        answer_arm[:,:,i] = binom.pmf(roi_pat, pat_cov, (1/2 - np.sqrt(1/4 + 
                                                                                     (1*m_k*np.square(ep) - 1*m_k*ep + 
                                                                                     1*m_k*np.square(ref_prob) - 1*m_k*ref_prob + 
                                                                                     (4-2*m_k)*np.square(expected_trans) - (4-2*m_k)*(expected_trans))
-                                                                                    )))
+                                                                                    )).astype(float))
                     answer_arm[answer_arm<=0] = answer_arm[answer_arm>0].min() if len(answer_arm[answer_arm>0])>0 else -1e-300
                     answer_arm = np.log10(answer_arm)
                     answer_arm = np.nan_to_num(answer_arm, nan=0.0, posinf=0.0, neginf=0.0)
 
-                    answer_trans = binom.pmf(roi_pat, pat_cov, float(1/2 - np.sqrt(1/4 + 
+                    answer_trans = binom.pmf(roi_pat, pat_cov, (1/2 - np.sqrt(1/4 + 
                                                                                     ((4-3*m_k)*np.square(expected_trans) - (4-3*m_k)*(expected_trans) + 
                                                                                      1*m_k*np.square(ref_prob) - 1*m_k*ref_prob)
-                                                                                    )))
+                                                                                    )).astype(float))
                     answer_trans[answer_trans<=0] = answer_trans[answer_trans>0].min() if len(answer_trans[answer_trans>0])>0 else -1e-300
                     answer_trans = np.log10(answer_trans)
                     answer_trans = np.nan_to_num(answer_trans, nan=0.0, posinf=0.0, neginf=0.0)
@@ -555,16 +555,16 @@ def main(command_line=None):
 
         # Cut only nonzero pixels of patient from control
         _,_, same_coords_inds = np.intersect1d(
-            int(pat_slice.row)*max_coord_const+int(pat_slice.col),
-            int(control_slice.row)*max_coord_const+int(control_slice.col),
+            pat_slice.row.astype(int)*max_coord_const + pat_slice.col.astype(int),
+            control_slice.row.astype(int)*max_coord_const + control_slice.col.astype(int),
             assume_unique=True, return_indices=True)
 
         # If not all nonzero pixels of patient are nonzero in control, we add patient map to control map and cut the pixels again
         if len(same_coords_inds) != len(pat_slice.data):
             control_slice = (control_slice+pat_slice).tocoo()
             _,_, same_coords_inds = np.intersect1d(
-            int(pat_slice.row)*max_coord_const+int(pat_slice.col),
-            int(control_slice.row)*max_coord_const+int(control_slice.col),
+            pat_slice.row.astype(int)*max_coord_const + pat_slice.col.astype(int),
+            control_slice.row.astype(int)*max_coord_const + control_slice.col.astype(int),
             assume_unique=True, return_indices=True)
 
         control_same_dots_cov = control_slice.data[same_coords_inds].sum()
