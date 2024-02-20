@@ -443,8 +443,8 @@ def calculations_trans_line(chr_name1, chr_name2):
                 tmp_ans = pd.DataFrame()
                 roi_slice = interval(x_pair[0],x_pair[1]+1,'left')
                 
-                tmp_ans.loc[0,'counts_pat'] = np.array(tmp_pat_slice.sum(axis=ax), dtype=np.int).reshape(-1)[roi_slice.to_slice()].sum()
-                tmp_ans['counts_control'] = np.array(tmp_control_slice.sum(axis=ax), dtype=np.int).reshape(-1)[roi_slice.to_slice()].sum()
+                tmp_ans.loc[0,'counts_pat'] = np.array(tmp_pat_slice.sum(axis=ax), dtype=int).reshape(-1)[roi_slice.to_slice()].sum()
+                tmp_ans['counts_control'] = np.array(tmp_control_slice.sum(axis=ax), dtype=int).reshape(-1)[roi_slice.to_slice()].sum()
                 tmp_ans['from_chr'] = chr_name1 if ax==1 else chr_name2
                 tmp_ans['to_chr'] = chr_name2 if ax==1 else chr_name1
                 tmp_ans['from_start'] = roi_slice.minint()
