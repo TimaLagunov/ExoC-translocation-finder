@@ -804,8 +804,8 @@ def main(command_line=None):
         
         ir += 1
         
-    artifacts.to_csv(f'./{pat_id}-all_artifacts.csv', index=False)
-    artifacts_line.to_csv(f'./{pat_id}-all_artifacts_line.csv', index=False)
+        artifacts.to_csv(f'./{pat_id}-all_artifacts.csv', index=False)
+        artifacts_line.to_csv(f'./{pat_id}-all_artifacts_line.csv', index=False)
     all_end_time = time() - t0
     with open(log_file, 'a') as file:
         file.write(f'\nFinish whole process at {verbose_timedelta(all_end_time)}, sum delta: {verbose_timedelta(all_end_time-all_start_time)}\n')
