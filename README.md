@@ -24,11 +24,11 @@ for t in $(find ${scripts_path} -mindepth 1 -maxdepth 1 -name "*.py"); do
 done
 ```
 
-3. Download the [sample](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/hg19/s132_P10.mcool) and the [control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.mcool) files to your working directory from URLs, or via _wget_:
+3. Download the [sample](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/s132_P10_exoc.mcool) and the [control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.exoc.mcool) files to your working directory from URLs, or via _wget_:
 
 ```
-wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/hg19/s132_P10.mcool
-wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.mcool
+wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/s132_P10_exoc.mcool
+wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.exoc.mcool
 ```
 
 4. Inside your ***cluster queue*** run _trans_founder_complete_new.py_ script to make csv files with all artifacts. Then run _bedpe_maker_complete.py_ on the csv files to make bedpe files with filtered translocations.
@@ -40,29 +40,27 @@ wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pa
 >n_proc = _your number of valid threads_ (max threads minus 2 is recomended)
 
 ```
-python trans_founder_complete_new.py -d . -p s132_P10.mcool -c sup_pat.XX.mcool -n ${n_proc} --logs
-python bedpe_maker_complete.py -f s132_P10-all_artifacts.csv
-python bedpe_maker_complete.py -f s132_P10-all_artifacts_line.csv
+python trans_founder_complete_new.py -d . -p s132_P10_exoc.mcool -c sup_pat.XX.mcool -n ${n_proc} --logs
+python bedpe_maker_complete.py -f s132_P10_exoc-all_artifacts.csv
+python bedpe_maker_complete.py -f s132_P10_exoc-all_artifacts_line.csv
 ```
 
-5. Check that your result is the same with _s132_P10-all_artifacts.example.bedpe_ and _s132_P10-all_artifacts_line.example.bedpe_
+5. Check that your result is the same with _s132_P10_exoc-all_artifacts.example.bedpe_ and _s132_P10_exoc-all_artifacts_line.example.bedpe_
 6. If you want to perform deeper analysis of artifacts, you can use jupyter notebook _Complete method analysis .ipynb_
 
 ## Data and working directory preparation
 1. Align your **fastq** files with [juicer](https://github.com/aidenlab/juicer)
 2. From *merged_nodups.txt* file, make the mcool file for your ***sample*** with [cooler](https://github.com/open2c/cooler).
-	The mcool file with your ***sample*** and the mcool with ***control*** sample should have the same resolutions set.
+	The mcool file with your ***sample*** and the mcool with ***control*** sample should have the same resolutions set ("1000,10000,16000,100000,250000,256000,1000000,4096000" for our ExoC control files).
 	For ExoC ***control*** sample usage, the resolution set is standard cooler set (powers of 2).
 >[!NOTE]
 >mnd_path = _path to merged_nodups.txt file_
 >
 >chr_size_file = _path to chrsize file_
->
->Highly recomend to make special chrsizes file for cooler (like _hg19.chromsizes.for.coller_ in repo) with chomosome sizes **larger by 150bp** because of juicer aligment coordinates things
 
 ```
 awk 'BEGIN {OFS="\t"; FS=" "} ($9>=30)&&($12>=30) {print $2,$3,$6,$7}' ${mnd_path} | cooler cload pairs -c1 1 -p1 2 -c2 3 -p2 4 ${chr_size_file}:1000 - sample.cool
-cooler zoomify sample.cool
+cooler zoomify -r 1000,10000,16000,100000,250000,256000,1000000,4096000 sample.cool
 rm sample.cool
 ```
 
@@ -73,13 +71,11 @@ rm sample.cool
 ln -s -T ../sample.mcool sample.mcool
 ```
 
-5. Download the [XX control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.mcool) or [XY control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XY.mcool) (depends on your ***sample*** sex):
->[!WARNING]
->Our control files have chromosomes length **larger by 150bp**. Use _hg19.chromsizes.for.coller_ when you make your mcool files to avoid problems.
+5. Download the [XX control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.exoc.mcool) or [XY control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XY.exoc.mcool) (depends on your ***sample*** sex):
 
 ```
-wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.mcool
-wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XY.mcool
+wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.exoc.mcool
+wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XY.exoc.mcool
 ```
 
 **OR** make your own control by merging the *merged_nodups.txt* files from your experiment and making *mcool* file like in step **2** from data preparation.
