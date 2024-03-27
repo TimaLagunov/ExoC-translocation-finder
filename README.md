@@ -51,8 +51,8 @@ python bedpe_maker_complete.py -f s132_P10_exoc-all_artifacts_line.csv
 ## Data and working directory preparation
 1. Align your **fastq** files with [juicer](https://github.com/aidenlab/juicer)
 2. From *merged_nodups.txt* file, make the mcool file for your ***sample*** with [cooler](https://github.com/open2c/cooler).
-	The mcool file with your ***sample*** and the mcool with ***control*** sample should have the same resolutions set ("1000,10000,16000,100000,250000,256000,1000000,4096000" for our ExoC control files).
-	For ExoC ***control*** sample usage, the resolution set is standard cooler set (powers of 2).
+	The mcool file with your ***sample*** and the mcool with ***control*** sample should have the same resolutions set.
+	For ExoC ***control*** sample usage, the resolution set is "1000,10000,16000,100000,250000,256000,1000000,4096000".
 >[!NOTE]
 >mnd_path = _path to merged_nodups.txt file_
 >
