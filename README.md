@@ -24,11 +24,11 @@ for t in $(find ${scripts_path} -mindepth 1 -maxdepth 1 -name "*.py"); do
 done
 ```
 
-3. Download the [sample](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/s132_P10_exoc.mcool) and the [control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.exoc.mcool) files to your working directory from URLs, or via _wget_:
+3. Download the [sample](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/hg38_files/s132_P10_exoc.mcool) and the [control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/hg38_files/sup_pat.XX.exoc.mcool) files to your working directory from URLs, or via _wget_:
 
 ```
-wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/s132_P10_exoc.mcool
-wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.exoc.mcool
+wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/hg38_files/s132_P10_exoc.mcool
+wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/hg38_files/sup_pat.XX.exoc.mcool
 ```
 
 4. Inside your ***cluster queue*** run _trans_founder_complete_new.py_ script to make csv files with all artifacts. Then run _bedpe_maker_complete.py_ on the csv files to make bedpe files with filtered translocations.
@@ -71,11 +71,11 @@ rm sample.cool
 ln -s -T ../sample.mcool sample.mcool
 ```
 
-5. Download the [XX control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.exoc.mcool) or [XY control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XY.exoc.mcool) (depends on your ***sample*** sex):
+5. Download the [XX control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/hg38_files/sup_pat.XX.exoc.mcool) or [XY control](https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/hg38_files/sup_pat.XY.exoc.mcool) (depends on your ***sample*** sex):
 
 ```
-wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XX.exoc.mcool
-wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/mcools/merged_hg19/sup_pat.XY.exoc.mcool
+wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/hg38_files/sup_pat.XX.exoc.mcool
+wget https://genedev.bionet.nsc.ru/ftp/by_Project/ExoC/hg38_files/sup_pat.XY.exoc.mcool
 ```
 
 **OR** make your own control by merging the *merged_nodups.txt* files from your experiment and making *mcool* file like in step **2** from data preparation.
